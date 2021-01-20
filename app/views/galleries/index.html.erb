@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Galleries</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Image title</th>
+      <th>Image description</th>
+      <th>Image</th>
+      <th>Category</th>
+      <th>Item for sale</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @galleries.each do |gallery| %>
+      <tr>
+        <td><%= gallery.image_title %></td>
+        <td><%= gallery.image_description %></td>
+        <td><%= gallery.image %></td>
+        <td><%= gallery.category %></td>
+        <td><%= gallery.item_for_sale %></td>
+        <td><%= link_to 'Show', gallery %></td>
+        <td><%= link_to 'Edit', edit_gallery_path(gallery) %></td>
+        <td><%= link_to 'Destroy', gallery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Gallery', new_gallery_path %>

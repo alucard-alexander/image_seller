@@ -1,0 +1,6 @@
+<h1> Please Enter your OTP to verify it's you </h1>
+<%= form_with url: "/otp_validate", method: :post do |form| %>
+  <%= form.label :otp, "Enter your OTP:" %>
+  <%= form.text_field :otp %>
+  <%= form.submit "Verify" %>
+<% end %>
