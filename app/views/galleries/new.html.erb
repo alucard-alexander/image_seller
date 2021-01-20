@@ -1,5 +1,7 @@
-<h1>New Gallery</h1>
+<div class='container' style="width: 25%;border: solid 2px #eee; border-radius: 7px">
+  <div style="width: 42%; margin: auto;">
+    <h3>New Gallery</h3>
+  </div>
+  <%= render 'form', gallery: @gallery %>
 
-<%= render 'form', gallery: @gallery %>
-
-<%= link_to 'Back', galleries_path %>
+</div>

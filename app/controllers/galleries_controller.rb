@@ -2,6 +2,7 @@ class GalleriesController < ApplicationController
   before_action :set_gallery, only: %i[show edit update destroy]
   skip_before_action :validate_otp_verified, only: %i[otp_confirmed_check otp_validate]
 
+
   def index
     @galleries = Gallery.all
   end
@@ -28,43 +29,28 @@ class GalleriesController < ApplicationController
   end
 
   # POST /galleries
-  # POST /galleries.json
   def create
+    binding.pry
     @gallery = Gallery.new(gallery_params)
-
-    respond_to do |format|
-      if @gallery.save
-        format.html { redirect_to @gallery, notice: 'Gallery was successfully created.' }
-        format.json { render :show, status: :created, location: @gallery }
-      else
-        format.html { render :new }
-        format.json { render json: @gallery.errors, status: :unprocessable_entity }
-      end
+    if @gallery.save
+      ImagePrice.create(gallery_id: @gallery.id, price: params[:image_price])
+      redirect_to galleries_path, notice: 'Gallery was successfully created.'
+    else
+      render :new
     end
   end
 
-  # PATCH/PUT /galleries/1
-  # PATCH/PUT /galleries/1.json
   def update
-    respond_to do |format|
-      if @gallery.update(gallery_params)
-        format.html { redirect_to @gallery, notice: 'Gallery was successfully updated.' }
-        format.json { render :show, status: :ok, location: @gallery }
-      else
-        format.html { render :edit }
-        format.json { render json: @gallery.errors, status: :unprocessable_entity }
-      end
+    if @gallery.update(gallery_params)
+      redirect_to galleries_path, notice: 'Gallery was successfully updated.' 
+    else
+      render :edit 
     end
   end
 
-  # DELETE /galleries/1
-  # DELETE /galleries/1.json
   def destroy
     @gallery.destroy
-    respond_to do |format|
-      format.html { redirect_to galleries_url, notice: 'Gallery was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to galleries_url, notice: 'Gallery was successfully destroyed.'
   end
 
   private
@@ -76,6 +62,6 @@ class GalleriesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def gallery_params
-    params.require(:gallery).permit(:image_title, :image_description, :image, :category, :item_for_sale)
+    params.require(:gallery).permit(:image_title, :image_description, :image, :category, :item_for_sale, :image_price)
   end
 end

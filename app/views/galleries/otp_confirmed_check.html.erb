@@ -1,6 +1,39 @@
-<h1> Please Enter your OTP to verify it's you </h1>
-<%= form_with url: "/otp_validate", method: :post do |form| %>
-  <%= form.label :otp, "Enter your OTP:" %>
-  <%= form.text_field :otp %>
-  <%= form.submit "Verify" %>
-<% end %>
+<div class='container' style="width: 75%;border: solid 2px #eee; border-radius: 7px">
+  <div style="width: 55%; margin: auto;">
+    <h2> Please Enter your OTP to verify it's you </h2>
+  </div>
+  <%= form_with url: "/otp_validate", method: :post do |form| %>
+    <div class="input-group mb-3">
+      <%= form.text_field :otp, placeholder: 'Enter your password', class: 'form-control', style: 'width: 50%' %>
+      <br/>
+      <span id="errmsg1" style='color: #d9534f'></span>
+      <%= form.submit "Verify", class: "btn btn-success", id: 'submit' %>
+    </div>
+  <% end %>
+</div>
+
+
+<script>
+  $('#submit').on('click', function(){
+    let error = false
+    if ($('#otp').val().length == 0){
+      $('#otp').css('color','#d9534f')
+      $('#otp').css('border-color','#d9534f')
+      $('#otp').effect("shake");
+      $("#errmsg1").html("Please enter yout otp").show().delay(2000).fadeOut("slow");
+      error = true
+    }else{
+      $('#otp').css('color','')
+      $('#otp').css('border-color','')
+    }
+  return !error
+  });
+
+  $('#otp').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      this.value = this.value.replace(/\D/g, '');
+    }
+  });
+</script>

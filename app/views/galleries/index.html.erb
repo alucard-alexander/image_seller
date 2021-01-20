@@ -2,15 +2,14 @@
 
 <h1>Galleries</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Image title</th>
-      <th>Image description</th>
-      <th>Image</th>
-      <th>Category</th>
-      <th>Item for sale</th>
-      <th colspan="3"></th>
+      <th scope="col">Title</th>
+      <th scope="col">Category</th>
+      <th scope="col">Image Preview</th>
+      <th scope="col">Paid or free</th>
+      <th colspan="2">Control Options</th>
     </tr>
   </thead>
 
@@ -18,11 +17,13 @@
     <% @galleries.each do |gallery| %>
       <tr>
         <td><%= gallery.image_title %></td>
-        <td><%= gallery.image_description %></td>
-        <td><%= gallery.image %></td>
         <td><%= gallery.category %></td>
-        <td><%= gallery.item_for_sale %></td>
-        <td><%= link_to 'Show', gallery %></td>
+        <td><%= image_tag gallery.image_url.to_s, style: 'height:auto;width:900px;' %></td>
+        <% if gallery.item_for_sale %>
+          <td> Paid </td>
+        <% else %>
+          <td> Free </td>
+        <% end %>
         <td><%= link_to 'Edit', edit_gallery_path(gallery) %></td>
         <td><%= link_to 'Destroy', gallery, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

@@ -1,4 +1,4 @@
-<%= form_with(model: gallery, local: true) do |form| %>
+<%= form_with(model: gallery, local: true, id: 'form1') do |form| %>
   <% if gallery.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(gallery.errors.count, "error") %> prohibited this gallery from being saved:</h2>
@@ -11,32 +11,184 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :image_title %>
-    <%= form.text_field :image_title %>
-  </div>
+  <table>
+    <tr>
+      <td colspan="2">  
+        <div class="input-group mb-3">
+          <%= form.text_field :image_title, class: 'form-control', placeholder: 'Enter image title' %>
+          <br/>
+          <span id="errmsg1" style='color: #d9534f'></span>
+        </div>
+      </td>
+    </tr>
 
-  <div class="field">
-    <%= form.label :image_description %>
-    <%= form.text_field :image_description %>
-  </div>
+    <tr>
+      <td colspan="2">  
+        <div class="input-group mb-3">
+          <%= form.text_field :image_description, class: 'form-control', placeholder: 'Enter image description'   %>
+        <br/>
+        <span id="errmsg2" style='color: #d9534f'></span>          
+        </div>
+      </td>
+    </tr>
 
-  <div class="field">
-    <%= form.label :image %>
-    <%= form.text_field :image %>
-  </div>
+    <tr>  
+      <td colspan="2">  
+        <div class="input-group mb-3">
+          <%= form.file_field :image, class: 'form-control'  %>
+          <br/>
+          <span id="errmsg3" style='color: #d9534f'></span>    
+        </div>
+      </td>
+    </tr>    
 
-  <div class="field">
-    <%= form.label :category %>
-    <%= form.text_field :category %>
-  </div>
+    <tr>
+      <div class="input-group mb-3">
+        <td>
+          <%= form.label :category %>
+        </td>          
+        <td>
+          <%= form.select :category, ['People', 'Tech', 'Entertainment'], selected: 'People', class: 'form-control'  %>
+        </td>
+      </div>
+    </tr>    
+    <tr>
+      <div class="">
+        <td>
+          <%= form.label :item_for_sale %>
+        </td>
+        <td>
+          <div class="radio">
+            <%= form.radio_button :item_for_sale, true %> Yes
+            <% if gallery.item_for_sale.nil? %>
+              <%= form.radio_button :item_for_sale, false, :checked => true %> No
+            <% else %>
+              <%= form.radio_button :item_for_sale, false %> No
+            <% end %>
+          </div>
+        </td>
+      </div>
+    </tr>
 
-  <div class="field">
-    <%= form.label :item_for_sale %>
-    <%= form.check_box :item_for_sale %>
-  </div>
+    <tr id="price_container">
+      <td>
+        Enter the price
+      </td>
+      <td>
+        <% if gallery.image_price.nil? %>
+          <%#= text_field 'image_price',  class: 'form-control', placeholder: 'Enter price for the image'%>
+          <input name="image_price" class="form-control" placeholder='Enter price for the image'>
+        <% else %>
+          <%#= form.text_field :image_price, class: 'form-control', placeholder: 'Enter price for the image', value: gallery.image_price.price %>
+          <input name="image_price" class="form-control" placeholder='Enter price for the image' value="<%= gallery.image_price.price %>">
+        <% end %>
+        <br/>
+        <span id="errmsg4" style='color: #d9534f'></span>   
+      </td>
+    </tr>
+    
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+    <% if gallery.id.nil? %>
+      <tr>
+        <td colspan="2">
+          <div class="input-group mb-3">
+            <%= check_box_tag 'tandc' %> &nbsp Accept T&C
+            <br/>
+            <span id="errmsg4" style='color: #d9534f'></span>   
+          </div>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td>
+        <%= form.submit 'Create image for sale', id: 'submit', class: "btn btn-success" %>
+      </td>
+      <td>
+        <%= link_to 'Cancel', galleries_path, class: "btn btn-danger", style: "margin:10px 10px 10px 10px; color: white" %>
+      </td>
+    </tr>
+  </table>    
 <% end %>
+
+
+<script>
+
+  $('#gallery_image_price').keyup(function(e)
+  {
+    if (/\D/g.test(this.value))
+    {
+      this.value = this.value.replace(/\D/g, '');
+    }
+  }); 
+
+  $( document ).ready(function() {
+    if ($('#gallery_item_for_sale_true').is(':checked')){
+      $('#price_container').show()
+    }else{
+      $('#price_container').hide()
+    }
+  });
+
+  $('#gallery_item_for_sale_true').on('change', function(){
+    if ($('#gallery_item_for_sale_true').is(':checked')){
+      $('#price_container').show()
+    }else{
+      $('#price_container').hide()
+    }
+  })
+
+    $('#gallery_item_for_sale_false').on('change', function(){
+    if ($('#gallery_item_for_sale_true').is(':checked')){
+      $('#price_container').show()
+    }else{
+      $('#price_container').hide()
+    }
+  })
+
+  $('#submit').on('click', function(){
+    let error = false
+    if ($('#gallery_image_title').val().length == 0){
+      $('#gallery_image_title').css('color','#d9534f')
+      $('#gallery_image_title').css('border-color','#d9534f')
+      $('#gallery_image_title').effect("shake");
+      $("#errmsg1").html("Please enter email address").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+    if ($('#gallery_image_description').val().length == 0){
+      $('#gallery_image_description').css('color','#d9534f')
+      $('#gallery_image_description').css('border-color','#d9534f')
+      $('#gallery_image_description').effect("shake");
+      $("#errmsg2").html("Please enter password").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+
+    if ($('#gallery_item_for_sale_true').is(':checked') && $('#gallery_image_price').val() == ''){
+      $('#gallery_image_price').css('color','#d9534f')
+      $('#gallery_image_price').css('border-color','#d9534f')
+      $('#gallery_image_price').effect("shake");
+      $("#errmsg2").html("Please enter password").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+
+    if ($('#gallery_image').val().length == ''){
+      $('#gallery_image').css('color','#d9534f')
+      $('#gallery_image').css('border-color','#d9534f')
+      $('#gallery_image').effect("shake");
+      $("#errmsg3").html("Select an image").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+    if ($('#tandc').length != 0) {
+      if (!$('#tandc').is(":checked")){
+        $('#tandc').css('color','#d9534f')
+        $('#tandc').css('border-color','#d9534f')
+        $('#tandc').effect("shake");
+        $("#errmsg4").html("Accept Terms and conditions").show().delay(2000).fadeOut("slow");
+        error = true
+      }
+    }
+
+
+    return !error
+  });
+</script>

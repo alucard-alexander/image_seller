@@ -1,26 +1,45 @@
-<h2>Log in</h2>
-
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class='container' style="width: 40%;border: solid 2px #eee; border-radius: 7px">
+  <div style="width: 20%; margin: auto;">
+    <h2>Log in</h2>
   </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "current-password" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <div class="input-group mb-3">
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Enter your email', class: 'form-control' %>
+      <br/>
+      <span id="errmsg1" style='color: #d9534f'></span>
+    </div>
 
-  <% if devise_mapping.rememberable? %>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+    <div class="input-group mb-3">
+      <%= f.password_field :password, autocomplete: "current-password", placeholder: 'Enter your password', class: 'form-control' %>
+      <br/>
+      <span id="errmsg2" style='color: #d9534f'></span>
+    </div>
+
+    <div style="width: 40%; margin: auto;">
+      <%= f.submit "Log in", class: "btn btn-success", style: "margin:10px 10px 10px 10px;", id: 'submit' %>
+      <%= link_to 'New User?', new_user_registration_path, style: "margin:10px 10px 10px 10px; color: white", class: "btn btn-primary" %>
     </div>
   <% end %>
+</div>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+<script>
+  $('#submit').on('click', function(){
+    let error = false
+    if ($('#user_email').val().length == 0){
+      $('#user_email').css('color','#d9534f')
+      $('#user_email').css('border-color','#d9534f')
+      $('#user_email').effect("shake");
+      $("#errmsg1").html("Please enter email address").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+    if ($('#user_password').val().length == 0){
+      $('#user_password').css('color','#d9534f')
+      $('#user_password').css('border-color','#d9534f')
+      $('#user_password').effect("shake");
+      $("#errmsg2").html("Please enter password").show().delay(2000).fadeOut("slow");
+      error = true
+    }
+    return !error
+  });
+</script>

@@ -1,24 +1,42 @@
-# README
+# Image Seller
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Getting Started
 
-Things you may want to cover:
+The following steps walk through getting the application running. Before you start,
 
-* Ruby version
+1. [Clone the project](#1-clone-the-project)
+2. [Install and set up the environment](#2-install-and-set-up-the-environment)
+3. [Start the app](#4-start-the-app)
 
-* System dependencies
 
-* Configuration
+#### 1. Clone the project
+1. Navigate to your project's chosen parent directory, e.g. `$ cd ~/Documents/`
+2. [Clone the project](https://github.com/alucard-alexander/url-shrinker.git), e.g. `git clone https://github.com/alucard-alexander/image_seller.git`
+3. Navigate into the project directory: `$ cd image_seller`
 
-* Database creation
+#### 2. Install and set up the environment
 
-* Database initialization
+* Make sure your Ruby version 2.7.2 and Rails 6.0.3.4
 
-* How to run the test suite
+```
+$ ruby -v
+$ rails -v
+$ bundle
+$ yarn install --check-files
+$ npm install
+$ rails db:create
+$ rails db:migrate
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+* If there is any missmatch please open the link and follow the instruction.
 
-* Deployment instructions
+1. Ruby installation -> https://gorails.com/setup
 
-* ...
+
+#### 3. Start the app
+
+```
+$ cd image_seller
+$ rails s
+```
+
