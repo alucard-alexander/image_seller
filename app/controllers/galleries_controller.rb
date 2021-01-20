@@ -33,7 +33,9 @@ class GalleriesController < ApplicationController
     binding.pry
     @gallery = Gallery.new(gallery_params)
     if @gallery.save
-      ImagePrice.create(gallery_id: @gallery.id, price: params[:image_price])
+      if @gallery.item_for_sale
+        ImagePrice.create(gallery_id: @gallery.id, price: params[:image_price])
+      end
       redirect_to galleries_path, notice: 'Gallery was successfully created.'
     else
       render :new
